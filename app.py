@@ -1,43 +1,32 @@
 import streamlit as st
-import requests
-import pandas as pd
 
-def get_weather(latitude, longitude):
-    # Step 1: Define the API URL for OpenMeteo
-    print(latitude, longitude)
-    api_url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&hourly=temperature_2m"
-   
-    # Step 2: Send a GET request to the OpenMeteo API
+def get_img(numbers):
+  col= st.columns(numbers)
+  for i in range(numbers):
+    # Step 1: Import necessary libraries
+    import requests  # Library for making HTTP requests
+
+    # Step 2: Define the API URL for a random cat image
+    api_url = "https://api.thecatapi.com/v1/images/search"
+
+    # Step 3: Send a GET request to the API and get the response
     response = requests.get(api_url)
 
-    # Step 3: Check if the request was successful (status code 200)
+    # Step 4: Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Step 4: Parse the JSON response to get weather data
-        weather_data = response.json()
-        print(weather_data.keys())
-        print(weather_data['hourly'])
+        # Step 5: Parse the JSON response to get the image URL
+        cat_data = response.json()
+        cat_image_url = cat_data[0]["url"]
 
-        df = pd.DataFrame(weather_data['hourly']['temperature_2m'],weather_data['hourly']['time'])
-        st.title("Weather Data")
-        st.write("Sample weather data in a Pandas DataFrame:")
-        st.line_chart(df)
-
-        # Step 5: Display the weather information
-        st.write(f"Weather information for Latidude:{latitude}, Longitude:{longitude}:")
-        st.write(f"Time: {weather_data['hourly']['time']}")
-        st.write(f"Temperature: {weather_data['hourly']['temperature_2m']}°C")
+        # Step 6: Display the cat image inline in Colab
+        with col[i]:
+          st.image(cat_image_url, use_column_width=True)
     else:
-        st.write(f"Failed to fetch weather data for Latidude:{latitude}, Longitude:{longitude}. Please check the city name.")
+        print("Failed to fetch cat data from the API.")
 
-#get_weather(3,4)
+st.write("Cat Image!!!!!!")
+numbers = st.number_input('Insert a number', value = 3, step=1)
 
-# Streamlit UI elements
-st.title("OpenMeteo Weather App")
-st.write("Enter the city for weather information:")
-
-latitude = st.number_input("Latitude", value=36)
-longitude = st.number_input("Longitude", value=135)
-
-if st.button("Get Weather"):
-    st.write(f"Fetching weather information for Latidude:{latitude}, Longitude:{longitude}...")
-    get_weather(latitude, longitude)
+if st.button("Load"):
+  st.write('The number is !', numbers)
+  get_img(numbers)
