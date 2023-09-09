@@ -16,9 +16,14 @@ def get_weather(latitude, longitude):
         weather_data = response.json()
 
         df = pd.DataFrame(weather_data['hourly']['temperature_2m'],weather_data['hourly']['time'])
-        st.title("Weather Data")
-        st.write("Sample weather data in a Pandas DataFrame:")
-        st.line_chart(df)
+        expander = st.expander("Weather Data Expander")
+        expander.write("Weather Data")
+        expander.write("Sample weather data in a Pandas DataFrame:")
+        expander.line_chart(df)
+
+        #st.title("Weather Data")
+        #st.write("Sample weather data in a Pandas DataFrame:")
+        #st.line_chart(df)
 
         # Step 5: Display the map
         st.write(f"Weather information for Latidude: {latitude}, Longitude: {longitude}:")
@@ -30,7 +35,7 @@ def get_weather(latitude, longitude):
     else:
         st.write(f"Failed to fetch weather data for Latidude:{latitude}, Longitude:{longitude}. Please check the city name.")
 
-#get_weather(35.0 ,135.7)
+#get_weather(38.0 ,127.1)
 
 # Streamlit UI elements
 st.title("OpenMeteo Weather App")
