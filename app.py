@@ -28,5 +28,5 @@ st.write("Cat Image!!!!!!")
 numbers = st.number_input('Insert a number', value = 3, step=1)
 
 if st.button("Load"):
-  st.write('The number is !', numbers)
+  st.write('The pic number is ', numbers)
   get_img(numbers)
